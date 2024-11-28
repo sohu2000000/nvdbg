@@ -254,7 +254,7 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 	u8 cmd = (u8)regs->dx;
 	unsigned long flags;
 
-	// pr_info("kprobe %s Device: %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
+	pr_info("kprobe pre %s Device: %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
 
 	if (class == VIRTIO_NET_CTRL_RX &&
 	    (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
@@ -297,6 +297,8 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 	u8 cmd = (u8)regs->dx;
 	unsigned long flag;
 	bool retval;
+
+	pr_info("kprobe post %s Device: %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
 
 #ifdef CONFIG_X86_64
 	retval = (bool)regs->ax; // Access RAX register for x86_64
