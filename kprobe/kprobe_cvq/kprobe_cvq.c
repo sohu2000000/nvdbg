@@ -227,23 +227,6 @@ static struct kprobe kp = {
 /* kprobe pre_handler: called just before the probed instruction is executed */
 static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 {
-/*
- 	int dfd = -1;
-	struct filename *filename = NULL;
-#ifdef CONFIG_X86
-	dfd = regs->di;
-    filename = (struct filename *) regs->si;
-#endif
-
-#ifdef CONFIG_ARM64
-  	dfd = regs->regs[0];
-    filename = (struct filename *) regs->regs[1];
-#endif
-
- 	if (filename && !(strcmp(filename->name, "testfile")))
-        printk(KERN_INFO "handler_pre:%s: dfd=%d, name=%s\n", p->symbol_name, dfd, filename->name);
-
-*/
 	struct virtnet_info *vi = (struct virtnet_info *)regs->di; // 获取第一个参数 dev
 	struct virtio_device *vdev = vi->vdev;
 	struct net_device *dev = vi->dev;
@@ -254,11 +237,11 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 	u8 cmd = (u8)regs->dx;
 	unsigned long flags;
 
-	pr_info("kprobe pre %s Device: %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
+	pr_info("kprobe pre %s: Device %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
 
-	if (class == VIRTIO_NET_CTRL_RX &&
-	    (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
-	     cmd == VIRTIO_NET_CTRL_RX_ALLMULTI)) {
+	// if (class == VIRTIO_NET_CTRL_RX &&
+	//     (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
+	//      cmd == VIRTIO_NET_CTRL_RX_ALLMULTI)) {
 		// 将网络设备的父设备转换为 PCI 设备
 		pci_dev = to_pci_dev(vdev->dev.parent);
 		if (!pci_dev) {
@@ -277,7 +260,7 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 			entry->counter++; // 增加调用次数
 			spin_unlock_irqrestore(&hash_table_lock, flags);
 		}
-	}
+	// }
 
 	return 0;
 
@@ -298,7 +281,7 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 	unsigned long flag;
 	bool retval;
 
-	pr_info("kprobe post %s Device: %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
+	pr_info("kprobe post %s: Device %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
 
 #ifdef CONFIG_X86_64
 	retval = (bool)regs->ax; // Access RAX register for x86_64
@@ -308,9 +291,9 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 #error "Unsupported architecture"
 #endif
 
-	if (class == VIRTIO_NET_CTRL_RX &&
-	    (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
-	     cmd == VIRTIO_NET_CTRL_RX_ALLMULTI)) {
+	// if (class == VIRTIO_NET_CTRL_RX &&
+	//     (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
+	//      cmd == VIRTIO_NET_CTRL_RX_ALLMULTI)) {
 		// 将网络设备的父设备转换为 PCI 设备
 		pci_dev = to_pci_dev(vdev->dev.parent);
 		if (!pci_dev) {
@@ -327,7 +310,7 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 				entry->err_ret++;
 			spin_unlock_irqrestore(&hash_table_lock, flag);
 		}
-	}
+	// }
 }
 
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(5, 11, 0)
