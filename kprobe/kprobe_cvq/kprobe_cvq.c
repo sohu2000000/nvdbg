@@ -237,8 +237,6 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 	u8 cmd = (u8)regs->dx;
 	unsigned long flags;
 
-	pr_info("kprobe pre %s: Device %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
-
 	// if (class == VIRTIO_NET_CTRL_RX &&
 	//     (cmd == VIRTIO_NET_CTRL_RX_PROMISC ||
 	//      cmd == VIRTIO_NET_CTRL_RX_ALLMULTI)) {
@@ -252,7 +250,9 @@ static int handler_pre(struct kprobe *p, struct pt_regs *regs)
 		bus = pci_dev->bus->number;
 		device = PCI_SLOT(pci_dev->devfn);
 		function = PCI_FUNC(pci_dev->devfn);
-		// pr_info("Device: %s, BDF: %02x:%02x.%x devfn %#x bus %p \n", dev->name, bus, device, function, pci_dev->devfn, pci_dev->bus);
+		pr_info("kprobe pre %s: Device %s, BDF %02x:%02x.%x devfn %#x bus %p \n",
+			TRACE_SYMBOL, dev->name, bus, device, function,
+			pci_dev->devfn, pci_dev->bus);
 
 		entry = find_or_create_entry(dev->name, bus, device, function, pci_dev->devfn);
 		if (entry) {
@@ -281,8 +281,6 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 	unsigned long flag;
 	bool retval;
 
-	pr_info("kprobe post %s: Device %s cmd %#x, cmd %#x\n", TRACE_SYMBOL, dev->name, class, cmd);
-
 #ifdef CONFIG_X86_64
 	retval = (bool)regs->ax; // Access RAX register for x86_64
 #elif defined(CONFIG_ARM64)
@@ -303,6 +301,10 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 
 		entry = find_entry(dev->name);
 		if (entry) {
+			pr_info("kprobe post %s: Device %s, BDF %02x:%02x.%x devfn %#x bus %p \n",
+				TRACE_SYMBOL, dev->name, entry->bus,
+				entry->device, entry->function, pci_dev->devfn,
+				pci_dev->bus);
 			spin_lock_irqsave(&hash_table_lock, flag);
 			if (retval)
 				entry->ok_ret++;
