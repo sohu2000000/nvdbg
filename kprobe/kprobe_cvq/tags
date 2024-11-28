@@ -1,0 +1,83 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+TRACE_SYMBOL	kprobe_example.c	/^	#define TRACE_SYMBOL /;"	d	language:C	file:
+VIRTIO_NET_RSS_MAX_KEY_SIZE	kprobe_example.c	/^#define VIRTIO_NET_RSS_MAX_KEY_SIZE /;"	d	language:C	file:
+VIRTIO_NET_RSS_MAX_TABLE_LEN	kprobe_example.c	/^#define VIRTIO_NET_RSS_MAX_TABLE_LEN /;"	d	language:C	file:
+affinity_hint_set	kprobe_example.c	/^	bool affinity_hint_set;$/;"	m	language:C	struct:virtnet_info	file:
+any_header_sg	kprobe_example.c	/^	bool any_header_sg;$/;"	m	language:C	struct:virtnet_info	file:
+big_packets	kprobe_example.c	/^	bool big_packets;$/;"	m	language:C	struct:virtnet_info	file:
+big_packets_num_skbfrags	kprobe_example.c	/^	unsigned int big_packets_num_skbfrags;$/;"	m	language:C	struct:virtnet_info	file:
+bus	kprobe_example.c	/^	u8 bus; \/\/ BDF: 总线号$/;"	m	language:C	struct:dev_counter	file:
+config_work	kprobe_example.c	/^	struct work_struct config_work;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::work_struct	file:
+counter	kprobe_example.c	/^	u64 counter; \/\/ 调用次数$/;"	m	language:C	struct:dev_counter	file:
+ctrl	kprobe_example.c	/^	struct control_buf *ctrl;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::control_buf	file:
+curr_queue_pairs	kprobe_example.c	/^	u16 curr_queue_pairs;$/;"	m	language:C	struct:virtnet_info	file:
+cvq	kprobe_example.c	/^	struct virtqueue *cvq;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::virtqueue	file:
+cvq_lock	kprobe_example.c	/^	struct mutex cvq_lock;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::mutex	file:
+dev	kprobe_example.c	/^	struct net_device *dev;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::net_device	file:
+dev_counter	kprobe_example.c	/^struct dev_counter {$/;"	s	language:C	file:
+dev_name	kprobe_example.c	/^	char dev_name[IFNAMSIZ]; \/\/ 设备名称$/;"	m	language:C	struct:dev_counter	file:
+devfn	kprobe_example.c	/^	u8 devfn; \/\/ 编码后的设备和功能号 (pci_dev->devfn)$/;"	m	language:C	struct:dev_counter	file:
+device	kprobe_example.c	/^	u8 device; \/\/ BDF: 设备号$/;"	m	language:C	struct:dev_counter	file:
+device_stats_cap	kprobe_example.c	/^	u64 device_stats_cap;$/;"	m	language:C	struct:virtnet_info	file:
+duplex	kprobe_example.c	/^	u8 duplex;$/;"	m	language:C	struct:virtnet_info	file:
+err_ret	kprobe_example.c	/^	u64 err_ret; \/\/ 调用次数$/;"	m	language:C	struct:dev_counter	file:
+failover	kprobe_example.c	/^	struct failover *failover;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::failover	file:
+find_entry	kprobe_example.c	/^static struct dev_counter *find_entry(const char *dev_name)$/;"	f	language:C	file:	signature:(const char *dev_name)
+find_or_create_entry	kprobe_example.c	/^find_or_create_entry(const char *dev_name, u8 bus, u8 device, u8 function,$/;"	f	language:C	file:	signature:(const char *dev_name, u8 bus, u8 device, u8 function, u8 devfn)
+function	kprobe_example.c	/^	u8 function; \/\/ BDF: 功能号$/;"	m	language:C	struct:dev_counter	file:
+guest_offloads	kprobe_example.c	/^	unsigned long guest_offloads;$/;"	m	language:C	struct:virtnet_info	file:
+guest_offloads_capable	kprobe_example.c	/^	unsigned long guest_offloads_capable;$/;"	m	language:C	struct:virtnet_info	file:
+handler_fault	kprobe_example.c	/^static int handler_fault(struct kprobe *p, struct pt_regs *regs, int trapnr)$/;"	f	language:C	file:	signature:(struct kprobe *p, struct pt_regs *regs, int trapnr)
+handler_post	kprobe_example.c	/^static void handler_post(struct kprobe *p, struct pt_regs *regs,$/;"	f	language:C	file:	signature:(struct kprobe *p, struct pt_regs *regs, unsigned long flags)
+handler_pre	kprobe_example.c	/^static int handler_pre(struct kprobe *p, struct pt_regs *regs)$/;"	f	language:C	file:	signature:(struct kprobe *p, struct pt_regs *regs)
+has_cvq	kprobe_example.c	/^	bool has_cvq;$/;"	m	language:C	struct:virtnet_info	file:
+has_rss	kprobe_example.c	/^	bool has_rss;$/;"	m	language:C	struct:virtnet_info	file:
+has_rss_hash_report	kprobe_example.c	/^	bool has_rss_hash_report;$/;"	m	language:C	struct:virtnet_info	file:
+hash_key_length	kprobe_example.c	/^	u8 hash_key_length;$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+hash_types	kprobe_example.c	/^	u32 hash_types;$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+hdr_len	kprobe_example.c	/^	u8 hdr_len;$/;"	m	language:C	struct:virtnet_info	file:
+indirection_table	kprobe_example.c	/^	u16 indirection_table[VIRTIO_NET_RSS_MAX_TABLE_LEN];$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+indirection_table_mask	kprobe_example.c	/^	u16 indirection_table_mask;$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+intr_coal_rx	kprobe_example.c	/^	struct virtnet_interrupt_coalesce intr_coal_rx;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::virtnet_interrupt_coalesce	file:
+intr_coal_tx	kprobe_example.c	/^	struct virtnet_interrupt_coalesce intr_coal_tx;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::virtnet_interrupt_coalesce	file:
+key	kprobe_example.c	/^	u8 key[VIRTIO_NET_RSS_MAX_KEY_SIZE];$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+kp	kprobe_example.c	/^static struct kprobe kp = {$/;"	v	language:C	typeref:struct:kprobe	file:
+kprobe_exit	kprobe_example.c	/^static void __exit kprobe_exit(void)$/;"	f	language:C	file:	signature:(void)
+kprobe_init	kprobe_example.c	/^static int __init kprobe_init(void)$/;"	f	language:C	file:	signature:(void)
+max_packets	kprobe_example.c	/^	u32 max_packets;$/;"	m	language:C	struct:virtnet_interrupt_coalesce	file:
+max_queue_pairs	kprobe_example.c	/^	u16 max_queue_pairs;$/;"	m	language:C	struct:virtnet_info	file:
+max_tx_vq	kprobe_example.c	/^	u16 max_tx_vq;$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+max_usecs	kprobe_example.c	/^	u32 max_usecs;$/;"	m	language:C	struct:virtnet_interrupt_coalesce	file:
+mergeable_rx_bufs	kprobe_example.c	/^	bool mergeable_rx_bufs;$/;"	m	language:C	struct:virtnet_info	file:
+node	kprobe_example.c	/^	struct hlist_node node; \/\/ 哈希链表节点$/;"	m	language:C	struct:dev_counter	typeref:struct:dev_counter::hlist_node	file:
+node	kprobe_example.c	/^	struct hlist_node node;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::hlist_node	file:
+node_dead	kprobe_example.c	/^	struct hlist_node node_dead;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::hlist_node	file:
+ok_ret	kprobe_example.c	/^	u64 ok_ret; \/\/ 调用次数$/;"	m	language:C	struct:dev_counter	file:
+print_and_cleanup_hash_table	kprobe_example.c	/^static void print_and_cleanup_hash_table(void)$/;"	f	language:C	file:	signature:(void)
+refill	kprobe_example.c	/^	struct delayed_work refill;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::delayed_work	file:
+refill_enabled	kprobe_example.c	/^	bool refill_enabled;$/;"	m	language:C	struct:virtnet_info	file:
+refill_lock	kprobe_example.c	/^	spinlock_t refill_lock;$/;"	m	language:C	struct:virtnet_info	file:
+rq	kprobe_example.c	/^	struct receive_queue *rq;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::receive_queue	file:
+rss	kprobe_example.c	/^	struct virtio_net_ctrl_rss rss;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::virtio_net_ctrl_rss	file:
+rss_hash_types_saved	kprobe_example.c	/^	u32 rss_hash_types_saved;$/;"	m	language:C	struct:virtnet_info	file:
+rss_hash_types_supported	kprobe_example.c	/^	u32 rss_hash_types_supported;$/;"	m	language:C	struct:virtnet_info	file:
+rss_indir_table_size	kprobe_example.c	/^	u16 rss_indir_table_size;$/;"	m	language:C	struct:virtnet_info	file:
+rss_key_size	kprobe_example.c	/^	u8 rss_key_size;$/;"	m	language:C	struct:virtnet_info	file:
+rx_dim_enabled	kprobe_example.c	/^	bool rx_dim_enabled;$/;"	m	language:C	struct:virtnet_info	file:
+rx_mode_work	kprobe_example.c	/^	struct work_struct rx_mode_work;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::work_struct	file:
+rx_mode_work_enabled	kprobe_example.c	/^	bool rx_mode_work_enabled;$/;"	m	language:C	struct:virtnet_info	file:
+speed	kprobe_example.c	/^	u32 speed;$/;"	m	language:C	struct:virtnet_info	file:
+sq	kprobe_example.c	/^	struct send_queue *sq;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::send_queue	file:
+status	kprobe_example.c	/^	unsigned int status;$/;"	m	language:C	struct:virtnet_info	file:
+unclassified_queue	kprobe_example.c	/^	u16 unclassified_queue;$/;"	m	language:C	struct:virtio_net_ctrl_rss	file:
+vdev	kprobe_example.c	/^	struct virtio_device *vdev;$/;"	m	language:C	struct:virtnet_info	typeref:struct:virtnet_info::virtio_device	file:
+virtio_net_ctrl_rss	kprobe_example.c	/^struct virtio_net_ctrl_rss {$/;"	s	language:C	file:
+virtnet_info	kprobe_example.c	/^struct virtnet_info {$/;"	s	language:C	file:
+virtnet_interrupt_coalesce	kprobe_example.c	/^struct virtnet_interrupt_coalesce {$/;"	s	language:C	file:
+xdp_enabled	kprobe_example.c	/^	bool xdp_enabled;$/;"	m	language:C	struct:virtnet_info	file:
+xdp_queue_pairs	kprobe_example.c	/^	u16 xdp_queue_pairs;$/;"	m	language:C	struct:virtnet_info	file:
