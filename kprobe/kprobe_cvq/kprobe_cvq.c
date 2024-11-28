@@ -145,6 +145,12 @@ struct dev_counter {
 	struct hlist_node node; // 哈希链表节点
 };
 
+struct dev_bdf {
+	u8 bus;
+	u8 device;
+	u8 function;
+};
+
 //#define TRACE_SYMBOL "virtnet_send_command"
 //#define TRACE_SYMBOL "virtnet_set_rx_mode"
 #if LINUX_VERSION_CODE <= KERNEL_VERSION(6, 10, 0)
@@ -160,14 +166,23 @@ find_or_create_entry(const char *dev_name, u8 bus, u8 device, u8 function,
 		     u8 devfn)
 {
 	struct dev_counter *entry;
-	u32 key = jhash(dev_name, strlen(dev_name), 0); // 根据设备名称生成哈希值
+	struct dev_bdf bdf = {
+		.bus = bus,
+		.device = device,
+		.function = function
+	};
 	unsigned long flags;
+	u32 key;
+
+	// Generate hash key using jhash
+	key = jhash(&bdf, sizeof(bdf), 0);
 
 	spin_lock_irqsave(&hash_table_lock, flags);
 
 	// 遍历哈希桶，查找是否已经存在对应条目
 	hash_for_each_possible(dev_call_count, entry, node, key) {
-		if (strcmp(entry->dev_name, dev_name) == 0) {
+		if (entry->bus == bus && entry->device == device &&
+		    entry->function == function) {
 			spin_unlock_irqrestore(&hash_table_lock, flags);
 			return entry; // 找到条目，返回
 		}
@@ -197,17 +212,27 @@ find_or_create_entry(const char *dev_name, u8 bus, u8 device, u8 function,
 	return entry;
 }
 
-static struct dev_counter *find_entry(const char *dev_name)
+static struct dev_counter *
+find_entry(const char *dev_name, u8 bus, u8 device, u8 function)
 {
 	struct dev_counter *entry;
-	u32 key = jhash(dev_name, strlen(dev_name), 0); // 根据设备名称生成哈希值
+	struct dev_bdf bdf = {
+		.bus = bus,
+		.device = device,
+		.function = function
+	};
 	unsigned long flags;
+	u32 key;
+
+	// Generate hash key using jhash
+	key = jhash(&bdf, sizeof(bdf), 0);
 
 	spin_lock_irqsave(&hash_table_lock, flags);
 
 	// 遍历哈希桶，查找是否已经存在对应条目
 	hash_for_each_possible(dev_call_count, entry, node, key) {
-		if (strcmp(entry->dev_name, dev_name) == 0) {
+		if (entry->bus == bus && entry->device == device &&
+		    entry->function == function) {
 			spin_unlock_irqrestore(&hash_table_lock, flags);
 			return entry; // 找到条目，返回
 		}
@@ -276,6 +301,7 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 	struct net_device *dev = vi->dev;
 	struct dev_counter *entry;
 	struct pci_dev *pci_dev; // 用于存储 PCI 设备信息
+	u8 bus, device, function;
 	u8 class = (u8)regs->si;
 	u8 cmd = (u8)regs->dx;
 	unsigned long flag;
@@ -299,7 +325,12 @@ static void handler_post(struct kprobe *p, struct pt_regs *regs,
 			return;
 		}
 
-		entry = find_entry(dev->name);
+		// 提取 BDF 信息
+		bus = pci_dev->bus->number;
+		device = PCI_SLOT(pci_dev->devfn);
+		function = PCI_FUNC(pci_dev->devfn);
+
+		entry = find_entry(dev->name, bus, device, function);
 		if (entry) {
 			pr_info("kprobe post %s: Device %s, BDF %02x:%02x.%x devfn %#x bus %p \n",
 				TRACE_SYMBOL, dev->name, entry->bus,
