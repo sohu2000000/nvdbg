@@ -146,6 +146,23 @@ struct virtnet_info {
 	u64 device_stats_cap;
 };
 
+/* We can not probe virtnet_send_command since return value is optimized
+ * regs_return_value can not get correct ret value
+ * so we need ot check from the caller
+ */
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(6, 10, 0)
+	// static char func_name[KSYM_NAME_LEN] = "virtnet_send_command";
+	static char func_name[KSYM_NAME_LEN] = "virtnet_set_queues";
+#else
+	// static char func_name[KSYM_NAME_LEN] = "virtnet_send_command_reply";
+	static char func_name[KSYM_NAME_LEN] = "virtnet_set_queues";
+#endif
+
+module_param_string(func, func_name, KSYM_NAME_LEN, 0644);
+MODULE_PARM_DESC(func, "Function to kretprobe; this module will report the"
+			" function's execution time");
+
+
 // 定义哈希表，大小为 2^4 = 16 个桶
 DEFINE_HASHTABLE(dev_call_count, 4);
 // 定义一个 spinlock 用于保护哈希表
@@ -163,44 +180,23 @@ struct dev_counter {
 	u64 err_ret; // 调用次数
 	struct hlist_node node; // 哈希链表节点
 };
-
 struct dev_bdf {
 	u8 bus;
 	u8 device;
 	u8 function;
 };
 
-
-// #define TRACE_SYMBOL "kernel_clone"
-//#define TRACE_SYMBOL "virtnet_send_command"
-//#define TRACE_SYMBOL "virtnet_set_rx_mode"
-#if LINUX_VERSION_CODE <= KERNEL_VERSION(6, 10, 0)
-	#define TRACE_SYMBOL "virtnet_send_command"
-#else
-	#define TRACE_SYMBOL "virtnet_send_command_reply"
-#endif
-
-// static char func_name[KSYM_NAME_LEN] = "kernel_clone";
-static char func_name[KSYM_NAME_LEN] = "virtio_dev_probe";
-module_param_string(func, func_name, KSYM_NAME_LEN, 0644);
-MODULE_PARM_DESC(func, "Function to kretprobe; this module will report the"
-			" function's execution time");
-
-
 /* per-instance private data */
 struct my_data {
 	ktime_t entry_stamp;
+	struct dev_counter *dev_cnt;
 };
 
 /* Here we use the entry_handler to timestamp function entry */
 static int entry_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
 {
 	struct my_data *data;
-
 	pr_info("%s entry handler", func_name);
-
-	// if (!current->mm)
-	// 	return 1;	/* Skip kernel threads */
 
 	data = (struct my_data *)ri->data;
 	data->entry_stamp = ktime_get();
@@ -215,7 +211,7 @@ NOKPROBE_SYMBOL(entry_handler);
  */
 static int ret_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
 {
-	unsigned long retval = regs_return_value(regs);
+	int retval = regs_return_value(regs);
 	struct my_data *data = (struct my_data *)ri->data;
 	s64 delta;
 	ktime_t now;
@@ -223,14 +219,13 @@ static int ret_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
 	pr_info("%s ret handler", func_name);
 	now = ktime_get();
 	delta = ktime_to_ns(ktime_sub(now, data->entry_stamp));
-	pr_info("%s returned %lu and took %lld ns to execute\n",
-			func_name, retval, (long long)delta);
+	pr_info("%s returned %d and took %lld ns to execute\n",
+		func_name, retval, (long long)delta);
 	return 0;
 }
 NOKPROBE_SYMBOL(ret_handler);
 
 static struct kretprobe my_kretprobe = {
-	// .kp.symbol_name		= TRACE_SYMBOL,
 	.handler		= ret_handler,
 	.entry_handler		= entry_handler,
 	.data_size		= sizeof(struct my_data),
