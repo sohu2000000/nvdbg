@@ -1,0 +1,2 @@
+# nvdbg
+nvidia debug 
