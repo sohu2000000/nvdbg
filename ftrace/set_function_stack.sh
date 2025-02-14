@@ -7,7 +7,8 @@ pushd /sys/kernel/debug/tracing
 # function=mlx5e_poll_rx_cq
 # function=mlx5e_handle_rx_cqe
 # function=mlx5e_skb_from_cqe_linear
-function=napi_gro_receive
+# function=napi_gro_receive
+function=mlx5_esw_qos_vport_enable
 
 rm -rf ~/a.txt
 echo > trace
@@ -20,3 +21,5 @@ popd
 
 cat trace > ~/a.txt
 cat ~/a.txt
+
+cat /sys/kernel/tracing/trace_pipe | tee ~/a.txt
