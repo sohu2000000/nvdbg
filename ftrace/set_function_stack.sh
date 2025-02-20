@@ -8,7 +8,13 @@ pushd /sys/kernel/debug/tracing
 # function=mlx5e_handle_rx_cqe
 # function=mlx5e_skb_from_cqe_linear
 # function=napi_gro_receive
-function=mlx5_esw_qos_vport_enable
+# function=mlx5_esw_qos_vport_enable
+# function=mlx5_esw_qos_vport_disable
+# function=mlx5_esw_qos_vport_disable
+# function=devlink_nl_port_get_dumpit
+# function=devlink_nl_cmd_port_get_doit
+function=esw_qos_vport_disable
+# function=devlink_rate_nodes_destroy
 
 rm -rf ~/a.txt
 echo > trace
@@ -18,8 +24,5 @@ echo 1 > options/func_stack_trace
 cat /dev/null > trace
 echo 1 > tracing_on
 popd
-
-cat trace > ~/a.txt
-cat ~/a.txt
 
 cat /sys/kernel/tracing/trace_pipe | tee ~/a.txt

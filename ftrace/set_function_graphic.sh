@@ -12,7 +12,11 @@ pushd /sys/kernel/debug/tracing
 # function=mlx5e_napi_poll
 # function=mlx5e_poll_rx_cq
 # function=esw_qos_vport_update_parent
-function=mlx5_esw_qos_vport_enable
+# function=mlx5_esw_qos_vport_enable
+# function=mlx5_esw_qos_vport_disable
+# function=mlx5_esw_qos_pre_cleanup
+# function=devlink_nl_port_get_dumpit
+function=mlx5e_probe
 
 rm -rf ~/a.txt
 echo > trace
